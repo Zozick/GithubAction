@@ -12,7 +12,6 @@ def has_duplicates(arr):
         seen.add(num)
     return False
 
-
 if __name__ == "__main__":
 
     b = []
