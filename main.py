@@ -1,5 +1,3 @@
-from multiprocessing.reduction import duplicate
-
 
 #Алгоритм
 def next_float(a,current,c,m):
