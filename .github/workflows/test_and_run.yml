@@ -3,7 +3,6 @@ name: Test and run
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-
   test-on-different-versions:
     name: Run tests
     runs-on: windows-latest
