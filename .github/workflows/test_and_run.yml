@@ -11,12 +11,16 @@ jobs:
       matrix:
         python-version: ["3.8","3.9","3.10","3.11","3.12","3.13"]
     steps:
-      -  uses: actions/checkout@v3
-      -  uses: action/setup-python@v4
-         with:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
           python-version: ${{ matrix.python-version }}
-      - run: pip install tox
-      - run: tox
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox
         env:
           DEPENDENCY_INJECTOR_LIMITED_API: 1
           TOXENV: ${{ matrix.python-version}}
