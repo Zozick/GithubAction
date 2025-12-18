@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Run Tests and Generate Report
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -148,7 +148,7 @@ jobs:
 
   deploy:
     name: Upload Code Artifact
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: [test, quality]
     if: needs.test.result == 'success' && needs.quality.result == 'success'
 
@@ -204,7 +204,7 @@ jobs:
 
   notification:
     name: Send Notification
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: [test, quality, deploy]
     if: always()
 
