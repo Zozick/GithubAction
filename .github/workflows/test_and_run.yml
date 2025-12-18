@@ -148,7 +148,7 @@ jobs:
 
   deploy:
     name: Upload Code Artifact
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: [test, quality]
     if: needs.test.result == 'success' && needs.quality.result == 'success'
 
@@ -204,7 +204,7 @@ jobs:
 
   notification:
     name: Send Notification
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: [test, quality, deploy]
     if: always()
 
