@@ -12,24 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Checkout code # Выгрузка репозитория
+    # Шаг 1: Выгрузка репозитория
+    - name: Checkout code
       uses: actions/checkout@v4
 
-
-    - name: Set up Python # Настройка окружения Python
+    # Шаг 2: Настройка окружения Python
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
 
-
-    - name: Install modules # Установка необходимых модулей
+    # Шаг 3: Установка необходимых модулей
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest pytest-html
 
-
-    - name: Create math_operations.py # Создание файла с функциями
+    # Шаг 4: Создание файла с функциями
+    - name: Create math_operations.py
       run: |
         cat > math_operations.py << 'EOF'
         def add(a, b):
@@ -47,8 +47,8 @@ jobs:
             return a / b
         EOF
 
-
-    - name: Create test file # Создание тестов
+    # Шаг 5: Создание тестов
+    - name: Create test file
       run: |
         cat > test_math_operations.py << 'EOF'
         import pytest
@@ -97,21 +97,21 @@ jobs:
                     divide(10, 0)
         EOF
 
-
-    - name: Run tests with pytest # Запуск тестов с HTML отчетом
+    # Шаг 6: Запуск тестов с генерацией HTML отчета
+    - name: Run tests with pytest
       run: |
         pytest --html=report.html --self-contained-html -v
 
-
-    - name: Upload test report # Выгрузка отчета тестов как артефакт
+    # Шаг 7: Выгрузка отчета тестов как артефакт
+    - name: Upload test report
       uses: actions/upload-artifact@v4
       with:
         name: test-report
         path: report.html
         retention-days: 30
 
-
-    - name: Set test status # Сохранение состояния для следующего job
+    # Шаг 8: Сохранение состояния для следующего job
+    - name: Set test status
       run: echo "TEST_STATUS=success" >> $GITHUB_ENV
 
   quality:
@@ -153,26 +153,26 @@ jobs:
     if: needs.test.result == 'success' && needs.quality.result == 'success'
 
     steps:
-
-    - name: Checkout code # Выгрузка репозитория
+    # Шаг 1: Выгрузка репозитория
+    - name: Checkout code
       uses: actions/checkout@v4
 
-
-    - name: Create source archive # Создание архива с кодом
+    # Шаг 2: Создание архива с кодом
+    - name: Create source archive
       run: |
         mkdir -p dist
         zip -r dist/source-code.zip . -x ".git/*" ".github/*" "__pycache__/*" "*.pyc" "dist/*"
 
-
-    - name: Upload source code artifact # Выгрузка кода как артефакт
+    # Шаг 3: Выгрузка кода как артефакт
+    - name: Upload source code artifact
       uses: actions/upload-artifact@v4
       with:
         name: source-code
         path: dist/source-code.zip
         retention-days: 30
 
-
-    - name: Create Python package # Создание Python пакета
+    # Шаг 4: Создание Python пакета
+    - name: Create Python package
       run: |
         cat > setup.py << 'EOF'
         from setuptools import setup, find_packages
@@ -194,8 +194,8 @@ jobs:
         python setup.py sdist bdist_wheel
         ls -la dist/
 
-
-    - name: Upload Python package # Выгрузка Python пакета
+    # Шаг 5: Выгрузка Python пакета
+    - name: Upload Python package
       uses: actions/upload-artifact@v4
       with:
         name: python-package
